@@ -12,6 +12,7 @@ import (
 	"github.com/common-nighthawk/go-figure"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/kevinfinalboss/FinOps/routes"
 )
 
 func main() {
@@ -28,6 +29,8 @@ func main() {
 	asciiArt.Print()
 
 	router := gin.Default()
+
+	routes.RegisterRoutes(router)
 
 	port := getPort()
 
@@ -60,5 +63,8 @@ func main() {
 
 func getPort() string {
 	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
 	return port
 }
