@@ -8,6 +8,7 @@ import (
 	"github.com/kevinfinalboss/FinOps/api/middlewares"
 	"github.com/kevinfinalboss/FinOps/internal/domain"
 	"github.com/kevinfinalboss/FinOps/internal/repository"
+	"github.com/kevinfinalboss/FinOps/internal/services"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -41,7 +42,7 @@ func (uc *UserController) RegisterUser(c *gin.Context) {
 
 	user.ID = primitive.NewObjectID().Hex()
 
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.PasswordHash), bcrypt.DefaultCost)
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao criar senha"})
 		return
@@ -91,6 +92,8 @@ func (uc *UserController) LoginUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao gerar o token"})
 		return
 	}
+
+	go services.SendLoginWebhook(user.FullName, user.Email, c.ClientIP())
 
 	c.JSON(http.StatusOK, gin.H{"message": "Login bem-sucedido", "token": token})
 }
