@@ -26,8 +26,14 @@ func (r *UserRepository) CreateUser(ctx context.Context, user domain.User) error
 func (r *UserRepository) FindUserByEmail(ctx context.Context, email string) (*domain.User, error) {
 	var user domain.User
 	err := r.db.FindOne(ctx, bson.M{"email": email}).Decode(&user)
-	if err != nil {
-		return nil, err
+	if err == mongo.ErrNoDocuments {
+		return nil, nil
 	}
-	return &user, nil
+	return &user, err
+}
+
+func (r *UserRepository) IsEmailInUse(ctx context.Context, email string) bool {
+	var user domain.User
+	err := r.db.FindOne(ctx, bson.M{"email": email}).Decode(&user)
+	return err != mongo.ErrNoDocuments
 }
