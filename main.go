@@ -41,6 +41,9 @@ func main() {
 	userRepo := repository.NewUserRepository(database.MongoDBClient.Database(dbName), "users")
 
 	router := gin.Default()
+	router.Static("/assets", "./assets")
+	router.Static("/public", "./public")
+	router.LoadHTMLGlob("public/*")
 
 	routes.RegisterRoutes(router, userRepo)
 
