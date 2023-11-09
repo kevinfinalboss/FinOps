@@ -13,6 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"github.com/kevinfinalboss/FinOps/database"
+	"github.com/kevinfinalboss/FinOps/internal/repository"
 	"github.com/kevinfinalboss/FinOps/routes"
 )
 
@@ -26,12 +27,22 @@ func main() {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
+	database.ConnectToMongoDB()
+	defer database.DisconnectFromMongoDB()
+
+	dbName := os.Getenv("MONGO_DB_NAME")
+	if dbName == "" {
+		log.Fatal("Nome do banco de dados não especificado na variável de ambiente MONGO_DB_NAME")
+	}
+
 	asciiArt := figure.NewFigure("FinOps", "", true)
 	asciiArt.Print()
 
+	userRepo := repository.NewUserRepository(database.MongoDBClient.Database(dbName), "users")
+
 	router := gin.Default()
 
-	routes.RegisterRoutes(router)
+	routes.RegisterRoutes(router, userRepo)
 
 	port := getPort()
 
@@ -40,9 +51,6 @@ func main() {
 		Handler: router,
 	}
 
-	database.ConnectToMongoDB()
-	defer database.DisconnectFromMongoDB()
-	
 	go func() {
 		log.Printf("Servidor rodando na porta: %s", port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
