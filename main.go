@@ -12,6 +12,7 @@ import (
 	"github.com/common-nighthawk/go-figure"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/kevinfinalboss/FinOps/database"
 	"github.com/kevinfinalboss/FinOps/routes"
 )
 
@@ -39,6 +40,9 @@ func main() {
 		Handler: router,
 	}
 
+	database.ConnectToMongoDB()
+	defer database.DisconnectFromMongoDB()
+	
 	go func() {
 		log.Printf("Servidor rodando na porta: %s", port)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
