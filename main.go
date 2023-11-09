@@ -39,13 +39,14 @@ func main() {
 	asciiArt.Print()
 
 	userRepo := repository.NewUserRepository(database.MongoDBClient.Database(dbName), "users")
+	spendingRepo := repository.NewSpendingRepository(database.MongoDBClient.Database(dbName), "spedings")
 
 	router := gin.Default()
 	router.Static("/assets", "./assets")
 	router.Static("/public", "./public")
 	router.LoadHTMLGlob("public/*")
 
-	routes.RegisterRoutes(router, userRepo)
+	routes.RegisterRoutes(router, userRepo, spendingRepo)
 
 	port := getPort()
 
