@@ -2,10 +2,12 @@ package api
 
 import (
 	"net/http"
+	"regexp"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kevinfinalboss/FinOps/internal/domain"
 	"github.com/kevinfinalboss/FinOps/internal/repository"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -22,15 +24,21 @@ func NewUserController(repo *repository.UserRepository) *UserController {
 func (uc *UserController) RegisterUser(c *gin.Context) {
 	var user domain.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Dados de entrada inválidos"})
 		return
 	}
 
-	existingUser, _ := uc.repo.FindUserByEmail(c, user.Email)
-	if existingUser != nil {
+	if !isValidEmail(user.Email) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Formato de email inválido"})
+		return
+	}
+
+	if uc.repo.IsEmailInUse(c, user.Email) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Email já está em uso"})
 		return
 	}
+
+	user.ID = primitive.NewObjectID().Hex()
 
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.PasswordHash), bcrypt.DefaultCost)
 	if err != nil {
@@ -39,11 +47,15 @@ func (uc *UserController) RegisterUser(c *gin.Context) {
 	}
 	user.PasswordHash = string(hashedPassword)
 
-	err = uc.repo.CreateUser(c, user)
-	if err != nil {
+	if err := uc.repo.CreateUser(c, user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao criar usuário"})
 		return
 	}
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Usuário criado com sucesso"})
+}
+
+func isValidEmail(email string) bool {
+	regex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+	return regex.MatchString(email)
 }
