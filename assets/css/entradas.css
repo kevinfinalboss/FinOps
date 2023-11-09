@@ -1,0 +1,37 @@
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.mobile-menu.entering {
+    animation: slideIn 0.5s forwards;
+}
+
+.mobile-menu.leaving {
+    animation: slideOut 0.5s forwards;
+}
+
+.details {
+    display: none;
+}
+
+.details-button {
+    cursor: pointer;
+}
+
+.details-button:hover {
+    text-decoration: underline;
+}
