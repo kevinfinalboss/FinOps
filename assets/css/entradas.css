@@ -16,6 +16,31 @@
     }
 }
 
+.mobile-menu {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .mobile-menu:not(.hidden) {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+      position: absolute;
+      width: 100%;
+      background-color: white;
+      top: 65px;
+      left: 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+  
+  @media (min-width: 768px) {
+    .mobile-menu {
+      display: flex;
+    }
+  }
+  
+
 .mobile-menu.entering {
     animation: slideIn 0.5s forwards;
 }
@@ -34,4 +59,4 @@
 
 .details-button:hover {
     text-decoration: underline;
-}
+}}
