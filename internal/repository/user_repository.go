@@ -46,3 +46,21 @@ func (r *UserRepository) FindUserByID(ctx context.Context, id string) (*domain.U
 	}
 	return &user, err
 }
+
+func (r *UserRepository) SaveRefreshToken(ctx context.Context, userID string, refreshToken string) error {
+	_, err := r.db.UpdateOne(
+		ctx,
+		bson.M{"_id": userID},
+		bson.M{"$set": bson.M{"refresh_token": refreshToken}},
+	)
+	return err
+}
+
+func (r *UserRepository) RemoveRefreshToken(ctx context.Context, userID string) error {
+	_, err := r.db.UpdateOne(
+		ctx,
+		bson.M{"_id": userID},
+		bson.M{"$unset": bson.M{"refresh_token": ""}},
+	)
+	return err
+}

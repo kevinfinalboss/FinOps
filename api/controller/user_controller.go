@@ -5,7 +5,7 @@ import (
 	"regexp"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kevinfinalboss/FinOps/api/middlewares"
+	"github.com/kevinfinalboss/FinOps/api/token"
 	"github.com/kevinfinalboss/FinOps/internal/domain"
 	"github.com/kevinfinalboss/FinOps/internal/repository"
 	"github.com/kevinfinalboss/FinOps/internal/services"
@@ -14,12 +14,14 @@ import (
 )
 
 type UserController struct {
-	repo *repository.UserRepository
+	repo        *repository.UserRepository
+	userService *services.UserService
 }
 
-func NewUserController(repo *repository.UserRepository) *UserController {
+func NewUserController(repo *repository.UserRepository, userService *services.UserService) *UserController {
 	return &UserController{
-		repo: repo,
+		repo:        repo,
+		userService: userService,
 	}
 }
 
@@ -72,7 +74,7 @@ func (uc *UserController) LoginUser(c *gin.Context) {
 		return
 	}
 
-	user, err := uc.repo.FindUserByEmail(c, loginCreds.Email)
+	user, err := uc.repo.FindUserByEmail(c.Request.Context(), loginCreds.Email)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar usuário"})
 		return
@@ -87,13 +89,51 @@ func (uc *UserController) LoginUser(c *gin.Context) {
 		return
 	}
 
-	token, err := middlewares.GenerateToken(user.ID)
+	tokenString, err := token.GenerateRefreshToken(user.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao gerar o token"})
 		return
 	}
 
+	refreshToken, err := token.GenerateRefreshToken(user.ID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao gerar o refresh token"})
+		return
+	}
+
+	err = uc.userService.SaveRefreshToken(c.Request.Context(), user.ID, refreshToken)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao salvar o refresh token"})
+		return
+	}
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     "refresh_token",
+		Value:    refreshToken,
+		HttpOnly: true,
+		Path:     "/",
+		MaxAge:   86400,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	})
+
 	go services.SendLoginWebhook(user.FullName, user.Email, c.ClientIP())
 
-	c.JSON(http.StatusOK, gin.H{"message": "Login bem-sucedido", "token": token})
+	c.JSON(http.StatusOK, gin.H{"message": "Login bem-sucedido", "token": tokenString})
+}
+
+func (uc *UserController) LogoutUser(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Não foi possível identificar o usuário para logout"})
+		return
+	}
+
+	err := uc.repo.RemoveRefreshToken(c.Request.Context(), userID.(string))
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao remover o refresh token"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Logout bem-sucedido"})
 }
