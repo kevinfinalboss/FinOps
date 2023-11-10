@@ -5,7 +5,6 @@ import (
 	"errors"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kevinfinalboss/FinOps/api/middlewares"
 	"github.com/kevinfinalboss/FinOps/internal/domain"
 	"github.com/kevinfinalboss/FinOps/internal/repository"
 )
@@ -34,21 +33,19 @@ func (s *UserService) GetUserFromContext(ctx *gin.Context) (*domain.User, error)
 	return user, nil
 }
 
-func (s *UserService) GetUserFromToken(tokenString string) (*domain.User, error) {
-	token, err := middlewares.ValidateToken(tokenString)
-	if err != nil {
-		return nil, err
-	}
-
-	claims, ok := token.Claims.(*middlewares.Claims)
-	if !ok || !token.Valid {
-		return nil, errors.New("claims inválidos no token")
-	}
-
-	user, err := s.userRepo.FindUserByID(context.Background(), claims.Subject)
+func (s *UserService) GetUserFromToken(subject string) (*domain.User, error) {
+	user, err := s.userRepo.FindUserByID(context.Background(), subject)
 	if err != nil {
 		return nil, err
 	}
 
 	return user, nil
+}
+
+func (s *UserService) SaveRefreshToken(ctx context.Context, userID string, refreshToken string) error {
+	return s.userRepo.SaveRefreshToken(ctx, userID, refreshToken)
+}
+
+func (s *UserService) RemoveRefreshToken(ctx context.Context, userID string) error {
+	return s.userRepo.RemoveRefreshToken(ctx, userID)
 }
