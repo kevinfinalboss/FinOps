@@ -10,12 +10,15 @@ import (
 	"github.com/kevinfinalboss/FinOps/internal/services"
 )
 
-func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spendingRepo *repository.SpendingRepository) {
+func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spendingRepo *repository.SpendingRepository, incomeRepo *repository.IncomeRepository) {
 	userService := services.NewUserService(userRepo)
 	userController := api.NewUserController(userRepo, userService)
 
 	spendingService := services.NewSpendingService(spendingRepo)
 	spendingController := api.NewSpendingController(spendingService, userService)
+
+	incomeService := services.NewIncomeService(incomeRepo)
+	incomeController := api.NewIncomeController(incomeService, userService)
 
 	authMiddleware := middlewares.AuthMiddleware(userService)
 
@@ -30,9 +33,14 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 			spendingGroup.Use(authMiddleware)
 			spendingGroup.POST("/register", spendingController.CreateSpending)
 			spendingGroup.GET("/recent", spendingController.GetRecentSpendings)
-			spendingGroup.GET("/spendings/sumByMonth", spendingController.GetSpendingsSumByMonth)
+			spendingGroup.GET("/sumByMonth", spendingController.GetSpendingsSumByMonth)
 		}
 
+		incomeGroup := apiGroup.Group("/incomes")
+		{
+			incomeGroup.Use(authMiddleware)
+			incomeGroup.POST("/register", incomeController.CreateIncome)
+		}
 	}
 
 	router.GET("/login", func(c *gin.Context) {
@@ -41,6 +49,10 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 
 	router.GET("/entradas", authMiddleware, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "entradas.html", gin.H{"title": "Página de Entradas"})
+	})
+
+	router.GET("/saidas", authMiddleware, func(c *gin.Context) {
+		c.HTML(http.StatusOK, "saidas.html", gin.H{"title": "Página de Saídas"})
 	})
 }
 
