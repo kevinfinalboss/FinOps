@@ -54,26 +54,27 @@
           <div class="form-group">
             <label for="valor" class="block text-gray-700 text-sm font-bold mb-2">Valor 💲</label>
             <input type="text" id="valor" placeholder="R$ 0,00" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
-          </div>
-          <div class="form-group">
-            <label for="formaPagamento" class="block text-gray-700 text-sm font-bold mb-2">Forma de pagamento 💳</label>
-            <select id="formaPagamento" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
-              <option>Dinheiro 💵</option>
-              <option>Pix 📱</option>
-              <option>Cartão 💳</option>
-            </select>
-          </div>
+          </div>      
           <div class="form-group">
             <label for="categoria" class="block text-gray-700 text-sm font-bold mb-2">Categoria 🏷️</label>
             <select id="categoria" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
-              <option>Restaurante 🍽️</option>
-              <option>Cinema 🎬</option>
-              <option>Diversos 🛍️</option>
-              <option>Lazer 🎢</option>
-              <option>Combustível ⛽</option>
-              <option>Vestuário 👚</option>
+              <option>Restaurante</option>
+              <option>Cinema</option>
+              <option>Diversos</option>
+              <option>Lazer</option>
+              <option>Combustível</option>
+              <option>Vestuário</option>
             </select>
           </div>
+          <div class="form-group">
+            <label for="formaPagamento" class="block text-gray-700 text-sm font-bold mb-2">Forma de Pagamento 💳</label>
+            <select id="formaPagamento" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
+                <option value="pix">Pix</option>
+                <option value="cartao">Cartão</option>
+                <option value="dinheiro">Dinheiro</option>
+            </select>
+        </div>
+        
           <div class="form-group">
             <label for="descricao" class="block text-gray-700 text-sm font-bold mb-2">Descrição 📝</label>
             <textarea id="descricao" rows="3" placeholder="Detalhes da transação" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none"></textarea>
@@ -83,7 +84,7 @@
       </form>
     </div>
     <div class="container mx-auto mt-10">
-      <h2 class="text-lg font-bold mb-4">Saídas</h2>
+      <h2 class="text-lg font-bold mb-4">Saídas Recentes</h2>
       <div id="expensesList" class="mb-4"></div>
     </div>
     <div class="container mx-auto mt-10">
