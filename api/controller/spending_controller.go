@@ -45,3 +45,12 @@ func (sc *SpendingController) CreateSpending(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Gasto criado com sucesso", "spending": spending})
 }
+
+func (sc *SpendingController) GetRecentSpendings(c *gin.Context) {
+	spendings, err := sc.spendingService.GetRecentSpendings(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar gastos recentes"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"recent_spendings": spendings})
+}
