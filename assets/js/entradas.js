@@ -156,34 +156,65 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   const form = document.querySelector('form');
   form.addEventListener('submit', function(event) {
-    event.preventDefault();
-    const token = getCookie('token');
-    const titulo = document.getElementById('titulo').value;
-    const data = document.getElementById('data').value;
-    const valor = document.getElementById('valor').value;
-    const formaPagamento = document.getElementById('formaPagamento').value;
-    const categoria = document.getElementById('categoria').value;
-    const descricao = document.getElementById('descricao').value;
-    const valorNumerico = parseFloat(valor.replace('R$', '').replace(',', '.'));
-    const spending = {
-      title: titulo,
-      date: new Date(data),
-      value: valorNumerico,
-      paymentMethod: formaPagamento.toLowerCase(),
-      category: categoria.toLowerCase(),
-      description: descricao
-    };
-    fetch('/api/v1/user/register/spendings', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(spending)
-    }).then(response => response.json()).then(data => {
-      console.log(data);
-    }).catch((error) => {
-      console.error('Error:', error);
-    });
-})
-})
+      event.preventDefault();
+      const token = getCookie('token');
+      const titulo = document.getElementById('titulo').value;
+      const data = document.getElementById('data').value;
+      const valor = document.getElementById('valor').value;
+      const categoria = document.getElementById('categoria').value;
+      const descricao = document.getElementById('descricao').value;
+      const valorNumerico = parseFloat(valor.replace('R$', '').replace(',', '.'));
+      const formaPagamento = document.getElementById('formaPagamento').value;
+      const spending = {
+          title: titulo,
+          date: new Date(data),
+          value: valorNumerico,
+          category: categoria.toLowerCase(),
+          paymentMethod: formaPagamento,
+          description: descricao
+      };
+      fetch('/api/v1/user/register/spendings', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify(spending)
+      }).then(response => {
+          if (response.ok) {
+              showNotification("Gasto registrado com sucesso!", "success");
+              clearFormFields();
+          } else {
+              showNotification("Falha ao registrar o gasto.", "error");
+          }
+          return response.json();
+      }).then(data => {
+          console.log(data);
+      }).catch((error) => {
+          console.error('Error:', error);
+          showNotification("Erro ao conectar ao servidor.", "error");
+      });
+  });
+});
+
+function showNotification(message, type) {
+  const notification = document.createElement("div");
+  notification.className = `notification ${type === "success" ? "success" : ""}`;
+  notification.innerText = message;
+
+  notification.style.animation = 'slideIn 0.5s, fadeOut 3s 2.5s forwards';
+
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+      notification.remove();
+  }, 6000);
+}
+
+function clearFormFields() {
+  document.getElementById('titulo').value = '';
+  document.getElementById('data').value = '';
+  document.getElementById('valor').value = '';
+  document.getElementById('categoria').selectedIndex = 0;
+  document.getElementById('descricao').value = '';
+}
