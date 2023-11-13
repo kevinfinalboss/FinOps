@@ -41,49 +41,57 @@ document.addEventListener('DOMContentLoaded', function() {
         button.textContent = '+';
       }
     };
+
+    fetchRecentExpenses();
+
+    function fetchRecentExpenses() {
+        fetch('/api/v1/spendings/recent')
+            .then(response => response.json())
+            .then(data => {
+                const expenses = data.recent_spendings;
+                expenses.forEach(expense => {
+                    addExpenseToList({
+                        title: expense.title,
+                        value: `R$ ${expense.value.toFixed(2)}`,
+                        category: expense.category,
+                        user: expense.author,
+                        paymentMethod: expense.paymentMethod,
+                        date: new Date(expense.date).toLocaleString()
+                    });
+                });
+            })
+            .catch(error => {
+              console.error('Erro ao buscar gastos recentes:', error);
+              showNoExpensesMessage();
+          });
+  }
+
+    function showNoExpensesMessage() {
+      const expensesList = document.getElementById('expensesList');
+      expensesList.innerHTML = '<div class="text-center py-4 bg-white rounded-lg shadow-md"><p class="text-gray-600 font-semibold">Sem saídas esse mês</p></div>';
+  }
   
     function addExpenseToList(expense) {
-      const expenseItem = document.createElement('div');
-      expenseItem.className = 'bg-white p-4 rounded-lg shadow-md mb-2';
-      const expenseContent = `
-        <div class="flex justify-between items-center">
-          <div class="flex-1">
-            <h3 class="font-bold">${expense.title}</h3>
-            <p>Valor: ${expense.value}</p>
-            <p>Categoria: ${expense.category}</p>
-          </div>
-          <div class="details-button" onclick="toggleDetails(this)">+</div>
-        </div>
-        <div class="details">
-          <p>Cadastrado por: ${expense.user}</p>
-          <p>Data e hora: ${expense.date}</p>
-        </div>
-      `;
-      expenseItem.innerHTML = expenseContent;
-      document.getElementById('expensesList').appendChild(expenseItem);
+        const expenseItem = document.createElement('div');
+        expenseItem.className = 'bg-white p-4 rounded-lg shadow-md mb-2';
+        const expenseContent = `
+            <div class="flex justify-between items-center">
+                <div class="flex-1">
+                    <h3 class="font-bold">${expense.title}</h3>
+                    <p>Valor: ${expense.value}</p>
+                    <p>Categoria: ${expense.category}</p>
+                    <p>Pagamento: ${expense.paymentMethod}</p>
+                </div>
+                <div class="details-button" onclick="toggleDetails(this)">+</div>
+            </div>
+            <div class="details">
+                <p>Cadastrado por: ${expense.user}</p>
+                <p>Data e hora: ${expense.date}</p>
+            </div>
+        `;
+        expenseItem.innerHTML = expenseContent;
+        document.getElementById('expensesList').appendChild(expenseItem);
     }
-  
-    addExpenseToList({
-      title: 'Restaurante Família Silva',
-      value: 'R$ 150,00',
-      category: 'Alimentação',
-      user: 'João',
-      date: '2023-11-07 19:30'
-    });
-    addExpenseToList({
-      title: 'Cinema "A Jornada"',
-      value: 'R$ 50,00',
-      category: 'Lazer',
-      user: 'Maria',
-      date: '2023-11-06 15:20'
-    });
-    addExpenseToList({
-      title: 'Supermercado CompreBem',
-      value: 'R$ 300,00',
-      category: 'Mercado',
-      user: 'Ana',
-      date: '2023-11-05 10:45'
-    });
 
 
   const dataExpenses = {
