@@ -27,3 +27,7 @@ func (s *SpendingService) CreateSpending(ctx context.Context, spending *domain.S
 func (s *SpendingService) GetRecentSpendings(ctx context.Context) ([]domain.Spending, error) {
 	return s.spendingRepo.GetRecentSpendings(ctx)
 }
+
+func (s *SpendingService) GetSpendingsByMonth(ctx context.Context, month string) ([]domain.Spending, error) {
+	return s.spendingRepo.GetSpendingsByMonth(ctx, month)
+}
