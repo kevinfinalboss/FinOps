@@ -37,6 +37,12 @@ func (sc *SpendingController) CreateSpending(c *gin.Context) {
 	spending.Author = user.FullName
 	spending.CreatedAt = time.Now()
 	spending.UpdatedAt = time.Now()
+	parsedDate, err := time.Parse(time.RFC3339, spending.Date)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Formato de data inválido"})
+		return
+	}
+	spending.Date = parsedDate.Format("02/01/2006")
 
 	if err := sc.spendingService.CreateSpending(c, &spending); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao criar gasto"})
@@ -53,4 +59,25 @@ func (sc *SpendingController) GetRecentSpendings(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"recent_spendings": spendings})
+}
+
+func (sc *SpendingController) GetSpendingsSumByMonth(c *gin.Context) {
+	month := c.Query("month")
+	if month == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Mês não especificado"})
+		return
+	}
+
+	spendings, err := sc.spendingService.GetSpendingsByMonth(c.Request.Context(), month)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar gastos"})
+		return
+	}
+
+	var total float64
+	for _, spending := range spendings {
+		total += spending.Value
+	}
+
+	c.JSON(http.StatusOK, gin.H{"total": total})
 }
