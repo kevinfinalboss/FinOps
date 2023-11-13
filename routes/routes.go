@@ -28,7 +28,7 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 		apiGroup.Use(authMiddleware)
 		apiGroup.POST("/user/register/spendings", spendingController.CreateSpending)
 	}
-
+	router.GET("/api/v1/spendings/recent", spendingController.GetRecentSpendings)
 	router.GET("/login", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "login.html", gin.H{
 			"title": "Página de Login",
