@@ -1,12 +1,25 @@
 package token
 
 import (
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/joho/godotenv"
 )
 
-var JwtKey = []byte("37248dc2d0572d57d8230e8e495fa5b179d819167767f4678ea78bef065b5c75")
+var JwtKey []byte
+
+func init() {
+	// Carregar variáveis de ambiente do arquivo .env
+	err := godotenv.Load()
+	if err != nil {
+		panic("Erro ao carregar o arquivo .env")
+	}
+
+	// Obter a chave JWT do arquivo .env
+	JwtKey = []byte(os.Getenv("JWT_KEY"))
+}
 
 type Claims struct {
 	jwt.StandardClaims
