@@ -23,3 +23,7 @@ func (s *SpendingService) CreateSpending(ctx context.Context, spending *domain.S
 	spending.UpdatedAt = time.Now()
 	return s.spendingRepo.CreateSpending(ctx, *spending)
 }
+
+func (s *SpendingService) GetRecentSpendings(ctx context.Context) ([]domain.Spending, error) {
+	return s.spendingRepo.GetRecentSpendings(ctx)
+}
