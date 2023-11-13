@@ -41,7 +41,29 @@ document.addEventListener('DOMContentLoaded', function() {
         button.textContent = '+';
       }
     };
+    fetchMonthlyExpensesTotal();
 
+    function fetchMonthlyExpensesTotal() {
+        const today = new Date();
+        const month = today.getMonth() + 1;
+        const year = today.getFullYear();
+        const formattedMonth = `${month}/${year}`;
+
+        fetch(`/api/v1/spendings/sumByMonth?month=${formattedMonth}`)
+            .then(response => response.json())
+            .then(data => {
+                updateExpensesPanel(data.total);
+            })
+            .catch(error => {
+                console.error('Erro ao buscar total de gastos do mês:', error);
+            });
+    }
+
+    function updateExpensesPanel(total) {
+        const panelSaidas = document.getElementById('panelSaidas');
+        const totalValueElement = panelSaidas.querySelector('p');
+        totalValueElement.textContent = `R$ ${total.toFixed(2)}`;
+    }
     fetchRecentExpenses();
 
     function fetchRecentExpenses() {
@@ -56,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         category: expense.category,
                         user: expense.author,
                         paymentMethod: expense.paymentMethod,
-                        date: new Date(expense.date).toLocaleString()
+                        date: expense.date
                     });
                 });
             })
@@ -86,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="details">
                 <p>Cadastrado por: ${expense.user}</p>
-                <p>Data e hora: ${expense.date}</p>
+                <p>Data: ${expense.date}</p>
             </div>
         `;
         expenseItem.innerHTML = expenseContent;
@@ -181,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
           paymentMethod: formaPagamento,
           description: descricao
       };
-      fetch('/api/v1/user/register/spendings', {
+      fetch('/api/v1/spendings/register', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
