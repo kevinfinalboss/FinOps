@@ -4,14 +4,16 @@ import (
 	"time"
 )
 
-type PaymentMethod string
 type Category string
+type PaymentMethod string
 
 const (
-	PaymentMethodPix  PaymentMethod = "pix"
-	PaymentMethodCard PaymentMethod = "cartão"
-	PaymentMethodCash PaymentMethod = "dinheiro"
+	PaymentMethodPix  PaymentMethod = "Pix"
+	PaymentMethodCard PaymentMethod = "Cartão"
+	PaymentMethodCash PaymentMethod = "Dinheiro"
+)
 
+const (
 	CategoryRestaurant    Category = "restaurante"
 	CategoryFuel          Category = "combustível"
 	CategoryLeisure       Category = "lazer"
@@ -22,26 +24,17 @@ const (
 )
 
 type Spending struct {
-	ID            string        `bson:"_id,omitempty" json:"id,omitempty"`
-	Author        string        `bson:"author" json:"author"`
-	Title         string        `bson:"title" json:"title"`
-	Date          time.Time     `bson:"date" json:"date"`
-	Value         float64       `bson:"value" json:"value"`
-	PaymentMethod PaymentMethod `bson:"payment_method" json:"payment_method"`
-	Category      Category      `bson:"category" json:"category"`
-	Description   string        `bson:"description" json:"description"`
-	CreatedAt     time.Time     `bson:"created_at" json:"created_at"`
-	UpdatedAt     time.Time     `bson:"updated_at" json:"updated_at"`
-	LastEditedBy  string        `bson:"last_edited_by,omitempty" json:"last_edited_by,omitempty"`
-}
-
-func (p PaymentMethod) IsValid() bool {
-	switch p {
-	case PaymentMethodPix, PaymentMethodCard, PaymentMethodCash:
-		return true
-	default:
-		return false
-	}
+	ID            string    `bson:"_id,omitempty" json:"id,omitempty"`
+	Author        string    `bson:"author" json:"author"`
+	Title         string    `bson:"title" json:"title"`
+	Date          time.Time `bson:"date" json:"date"`
+	Value         float64   `bson:"value" json:"value"`
+	Category      Category  `bson:"category" json:"category"`
+	PaymentMethod string    `bson:"paymentMethod" json:"paymentMethod"`
+	Description   string    `bson:"description" json:"description"`
+	CreatedAt     time.Time `bson:"created_at" json:"created_at"`
+	UpdatedAt     time.Time `bson:"updated_at" json:"updated_at"`
+	LastEditedBy  string    `bson:"last_edited_by,omitempty" json:"last_edited_by,omitempty"`
 }
 
 func (c Category) IsValid() bool {
