@@ -15,9 +15,8 @@
           <span class="font-semibold text-gray-500 text-lg">Financeiro 💰</span>
         </div>
         <div class="mobile-menu hidden md:flex items-center space-x-1">
-          <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Dashboard</a>
-          <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Entradas</a>
-          <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Saídas</a>
+          <a href="/entradas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Entradas</a>
+          <a href="/saidas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Saídas</a>
           <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Relatórios</a>
           <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Configurações</a>
         </div>
@@ -56,25 +55,16 @@
             <input type="text" id="valor" placeholder="R$ 0,00" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
           </div>      
           <div class="form-group">
-            <label for="categoria" class="block text-gray-700 text-sm font-bold mb-2">Categoria 🏷️</label>
-            <select id="categoria" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
-              <option>Restaurante</option>
-              <option>Cinema</option>
-              <option>Diversos</option>
-              <option>Lazer</option>
-              <option>Combustível</option>
-              <option>Vestuário</option>
+            <label for="categoria" class="block text-gray-700 text-sm font-bold mb-2">Metódo de Recebimento 🏷️</label>
+            <select id="incomeMethod" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
+                <option value="TED">TED</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Pix">Pix</option>
+                <option value="Outros">Outros</option>
             </select>
+            
           </div>
-          <div class="form-group">
-            <label for="formaPagamento" class="block text-gray-700 text-sm font-bold mb-2">Forma de Pagamento 💳</label>
-            <select id="formaPagamento" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
-                <option value="pix">Pix</option>
-                <option value="cartao">Cartão</option>
-                <option value="dinheiro">Dinheiro</option>
-            </select>
-        </div>
-        
           <div class="form-group">
             <label for="descricao" class="block text-gray-700 text-sm font-bold mb-2">Descrição 📝</label>
             <textarea id="descricao" rows="3" placeholder="Detalhes da transação" required class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none"></textarea>

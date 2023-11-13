@@ -130,33 +130,34 @@ document.addEventListener('DOMContentLoaded', function() {
       event.preventDefault();
       const token = getCookie('token');
       const titulo = document.getElementById('titulo').value;
-      const data = document.getElementById('data').value;
+      const dataElement = document.getElementById('data').value;
       const valor = document.getElementById('valor').value;
-      const categoria = document.getElementById('categoria').value;
+      const incomeMethod = document.getElementById('incomeMethod').value;
       const descricao = document.getElementById('descricao').value;
       const valorNumerico = parseFloat(valor.replace('R$', '').replace(',', '.'));
-      const formaPagamento = document.getElementById('formaPagamento').value;
-      const spending = {
+
+      const data = formatDate(dataElement);
+
+      const income = {
           title: titulo,
-          date: new Date(data),
+          date: data,
           value: valorNumerico,
-          category: categoria.toLowerCase(),
-          paymentMethod: formaPagamento,
+          incomeMethod: incomeMethod,
           description: descricao
       };
-      fetch('/api/v1/spendings/register', {
+
+      fetch('/api/v1/incomes/register', {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify(spending)
+          body: JSON.stringify(income)
       }).then(response => {
           if (response.ok) {
-              showNotification("Gasto registrado com sucesso!", "success");
-              clearFormFields();
+              showNotification("Entrada registrada com sucesso!", "success");
           } else {
-              showNotification("Falha ao registrar o gasto.", "error");
+              showNotification("Falha ao registrar a entrada.", "error");
           }
           return response.json();
       }).then(data => {
@@ -167,6 +168,11 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 });
+
+function formatDate(inputDate) {
+    const parts = inputDate.split('-');
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+}
 
 function showNotification(message, type) {
   const notification = document.createElement("div");
@@ -180,12 +186,4 @@ function showNotification(message, type) {
   setTimeout(() => {
       notification.remove();
   }, 6000);
-}
-
-function clearFormFields() {
-  document.getElementById('titulo').value = '';
-  document.getElementById('data').value = '';
-  document.getElementById('valor').value = '';
-  document.getElementById('categoria').selectedIndex = 0;
-  document.getElementById('descricao').value = '';
 }
