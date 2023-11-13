@@ -27,7 +27,7 @@ type Spending struct {
 	ID            string    `bson:"_id,omitempty" json:"id,omitempty"`
 	Author        string    `bson:"author" json:"author"`
 	Title         string    `bson:"title" json:"title"`
-	Date          time.Time `bson:"date" json:"date"`
+	Date          string    `bson:"date" json:"date"`
 	Value         float64   `bson:"value" json:"value"`
 	Category      Category  `bson:"category" json:"category"`
 	PaymentMethod string    `bson:"paymentMethod" json:"paymentMethod"`
