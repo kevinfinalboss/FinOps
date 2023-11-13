@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.token) {
                 document.cookie = `token=${data.token};path=/;max-age=1800`;
-                window.location.href = '/entradas';
+                window.location.href = '/saidas';
             } else {
                 alert('Login falhou: ' + data.error);
             }

@@ -115,6 +115,65 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('expensesList').appendChild(expenseItem);
     }
 
+
+  const dataExpenses = {
+    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho'],
+    datasets: [{
+      label: 'Despesas por mês',
+      data: [500, 400, 300, 700, 200, 300, 400],
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgba(255, 99, 132, 1)',
+      borderWidth: 1
+    }]
+  };
+  const dataIncome = {
+    labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'],
+    datasets: [{
+      label: 'Entrada por mês',
+      data: [600, 700, 800, 200, 300, 400],
+      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+      borderColor: 'rgba(54, 162, 235, 1)',
+      borderWidth: 1
+    }]
+  };
+  let currentChart = new Chart(document.getElementById('myChart'), {
+    type: 'bar',
+    data: dataExpenses,
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    },
+  });
+  document.getElementById('chartType').addEventListener('change', function() {
+    let selectedOption = this.value;
+    let newData;
+    switch (selectedOption) {
+      case 'expenses':
+        newData = dataExpenses;
+        break;
+      case 'income':
+        newData = dataIncome;
+        break;
+      case 'category':
+        break;
+    }
+    currentChart.destroy();
+    currentChart = new Chart(document.getElementById('myChart'), {
+      type: 'bar',
+      data: newData,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      },
+    });
+  });
+
   function getCookie(name) {
     let cookieArr = document.cookie.split(";");
     for (let i = 0; i < cookieArr.length; i++) {
