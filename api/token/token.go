@@ -11,13 +11,10 @@ import (
 var JwtKey []byte
 
 func init() {
-	// Carregar variáveis de ambiente do arquivo .env
 	err := godotenv.Load()
 	if err != nil {
 		panic("Erro ao carregar o arquivo .env")
 	}
-
-	// Obter a chave JWT do arquivo .env
 	JwtKey = []byte(os.Getenv("JWT_KEY"))
 }
 
