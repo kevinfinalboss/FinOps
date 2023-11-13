@@ -25,20 +25,22 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 		apiGroup.POST("/user/login", userController.LoginUser)
 		apiGroup.POST("/user/register", userController.RegisterUser)
 
-		apiGroup.Use(authMiddleware)
-		apiGroup.POST("/user/register/spendings", spendingController.CreateSpending)
+		spendingGroup := apiGroup.Group("/spendings")
+		{
+			spendingGroup.Use(authMiddleware)
+			spendingGroup.POST("/register", spendingController.CreateSpending)
+			spendingGroup.GET("/recent", spendingController.GetRecentSpendings)
+			spendingGroup.GET("/spendings/sumByMonth", spendingController.GetSpendingsSumByMonth)
+		}
+
 	}
-	router.GET("/api/v1/spendings/recent", spendingController.GetRecentSpendings)
+
 	router.GET("/login", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "login.html", gin.H{
-			"title": "Página de Login",
-		})
+		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Página de Login"})
 	})
 
 	router.GET("/entradas", authMiddleware, func(c *gin.Context) {
-		c.HTML(http.StatusOK, "entradas.html", gin.H{
-			"title": "Página de Entradas",
-		})
+		c.HTML(http.StatusOK, "entradas.html", gin.H{"title": "Página de Entradas"})
 	})
 }
 
