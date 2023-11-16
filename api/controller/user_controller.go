@@ -122,6 +122,16 @@ func (uc *UserController) LoginUser(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Login bem-sucedido", "token": tokenString})
 }
 
+func (uc *UserController) GetAllUsers(c *gin.Context) {
+	users, err := uc.repo.GetAllUsers(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar usuários"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"users": users})
+}
+
 func (uc *UserController) LogoutUser(c *gin.Context) {
 	userID, exists := c.Get("userID")
 	if !exists {
