@@ -49,6 +49,10 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 		c.HTML(http.StatusOK, "login.html", gin.H{"title": "Página de Login"})
 	})
 
+	router.GET("/", func(c *gin.Context) {
+		c.Redirect(http.StatusMovedPermanently, "/login")
+	})
+
 	router.GET("/entradas", authMiddleware, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "entradas.html", gin.H{"title": "Página de Entradas"})
 	})
