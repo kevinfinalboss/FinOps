@@ -31,3 +31,11 @@ func (s *SpendingService) GetRecentSpendings(ctx context.Context) ([]domain.Spen
 func (s *SpendingService) GetSpendingsByMonth(ctx context.Context, month string) ([]domain.Spending, error) {
 	return s.spendingRepo.GetSpendingsByMonth(ctx, month)
 }
+
+func (s *IncomeService) GetRecentIncomes(ctx context.Context) ([]domain.Income, error) {
+	return s.incomeRepo.GetRecentIncomes(ctx)
+}
+
+func (s *IncomeService) GetIncomesSum(ctx context.Context) (float64, error) {
+	return s.incomeRepo.GetIncomesSum(ctx)
+}
