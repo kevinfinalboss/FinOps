@@ -47,6 +47,29 @@ func (r *UserRepository) FindUserByID(ctx context.Context, id string) (*domain.U
 	return &user, err
 }
 
+func (r *UserRepository) GetAllUsers(ctx context.Context) ([]*domain.User, error) {
+	var users []*domain.User
+	cursor, err := r.db.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	for cursor.Next(ctx) {
+		var user domain.User
+		if err := cursor.Decode(&user); err != nil {
+			return nil, err
+		}
+		users = append(users, &user)
+	}
+
+	if err := cursor.Err(); err != nil {
+		return nil, err
+	}
+
+	return users, nil
+}
+
 func (r *UserRepository) SaveRefreshToken(ctx context.Context, userID string, refreshToken string) error {
 	_, err := r.db.UpdateOne(
 		ctx,
