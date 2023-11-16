@@ -67,53 +67,55 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchRecentExpenses();
 
     function fetchRecentExpenses() {
-        fetch('/api/v1/spendings/recent')
-            .then(response => response.json())
-            .then(data => {
-                const expenses = data.recent_spendings;
-                expenses.forEach(expense => {
-                    addExpenseToList({
-                        title: expense.title,
-                        value: `R$ ${expense.value.toFixed(2)}`,
-                        category: expense.category,
-                        user: expense.author,
-                        paymentMethod: expense.paymentMethod,
-                        date: expense.date
-                    });
-                });
-            })
-            .catch(error => {
-              console.error('Erro ao buscar gastos recentes:', error);
+      fetch('/api/v1/incomes/recent')
+          .then(response => response.json())
+          .then(data => {
+              const incomes = data.recent_incomes;
+              if (incomes.length === 0) {
+                  showNoExpensesMessage();
+                  return;
+              }
+              incomes.forEach(income => {
+                  addIncomeToList({
+                      title: income.title,
+                      value: `R$ ${income.value.toFixed(2)}`,
+                      user: income.author,
+                      incomeMethod: income.incomeMethod,
+                      date: new Date(income.date).toLocaleDateString('pt-BR')
+                  });
+              });
+          })
+          .catch(error => {
+              console.error('Erro ao buscar entradas recentes:', error);
               showNoExpensesMessage();
           });
   }
-
-    function showNoExpensesMessage() {
+  
+  function showNoExpensesMessage() {
       const expensesList = document.getElementById('expensesList');
-      expensesList.innerHTML = '<div class="text-center py-4 bg-white rounded-lg shadow-md"><p class="text-gray-600 font-semibold">Sem saídas esse mês</p></div>';
+      expensesList.innerHTML = '<div class="text-center py-4 bg-white rounded-lg shadow-md"><p class="text-gray-600 font-semibold">Sem entradas esse mês</p></div>';
   }
   
-    function addExpenseToList(expense) {
-        const expenseItem = document.createElement('div');
-        expenseItem.className = 'bg-white p-4 rounded-lg shadow-md mb-2';
-        const expenseContent = `
-            <div class="flex justify-between items-center">
-                <div class="flex-1">
-                    <h3 class="font-bold">${expense.title}</h3>
-                    <p>Valor: ${expense.value}</p>
-                    <p>Categoria: ${expense.category}</p>
-                    <p>Pagamento: ${expense.paymentMethod}</p>
-                </div>
-                <div class="details-button" onclick="toggleDetails(this)">+</div>
-            </div>
-            <div class="details">
-                <p>Cadastrado por: ${expense.user}</p>
-                <p>Data: ${expense.date}</p>
-            </div>
-        `;
-        expenseItem.innerHTML = expenseContent;
-        document.getElementById('expensesList').appendChild(expenseItem);
-    }
+  function addIncomeToList(income) {
+      const incomeItem = document.createElement('div');
+      incomeItem.className = 'bg-white p-4 rounded-lg shadow-md mb-2';
+      const incomeContent = `
+          <div class="flex justify-between items-center">
+              <div class="flex-1">
+                  <h3 class="font-bold">${income.title}</h3>
+                  <p>Valor: ${income.value}</p>
+                  <p>Método de Recebimento: ${income.incomeMethod}</p>
+              </div>
+              <div class="details-button" onclick="toggleDetails(this)">+</div>
+          </div>
+          <div class="details">
+              <p>Cadastrado por: ${income.user}</p>
+              <p>Data: ${income.date}</p>
+          </div>
+      `;
+      incomeItem.innerHTML = incomeContent;
+      document.getElementById('expensesList').appendChild(incomeItem);
+  }
 
   function getCookie(name) {
     let cookieArr = document.cookie.split(";");
