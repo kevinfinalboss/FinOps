@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function fetchUsers() {
-    fetch('/api/v1/users')
+    fetch('/api/v1/users/list')
         .then(response => response.json())
         .then(data => {
             if (data && data.users) {
