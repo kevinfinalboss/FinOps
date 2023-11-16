@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    fetchUsers();
     const form = document.getElementById('formUsuario');
     
     form.addEventListener('submit', function(event) {
@@ -29,3 +30,32 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+function fetchUsers() {
+    fetch('/api/v1/users')
+        .then(response => response.json())
+        .then(data => {
+            if (data && data.users) {
+                renderUsers(data.users);
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar usuários:', error);
+        });
+}
+
+function renderUsers(users) {
+    const usersTable = document.getElementById('usersTable');
+    users.forEach(user => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${user.full_name}</td>
+            <td>${user.email}</td>
+            <td>
+                <a href="#">Editar</a> | 
+                <a href="#">Ver</a> | 
+                <a href="#">Excluir</a>
+            </td>`;
+        usersTable.appendChild(tr);
+    });
+}
