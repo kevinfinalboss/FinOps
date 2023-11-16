@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - Controle Financeiro Pessoal 📊</title>
+    <link rel="stylesheet" href="../assets/css/relatorios.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <nav class="bg-white shadow-md w-full fixed top-0 left-0">
+        <div class="flex justify-between items-center w-full px-4 py-3">
+            <div>
+                <span class="font-semibold text-gray-500 text-lg">Financeiro 💰</span>
+            </div>
+            <div class="mobile-menu hidden md:flex items-center space-x-1">
+                <a href="/entradas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Entradas</a>
+                <a href="/saidas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Saídas</a>
+                <a href="/relatorios" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Relatórios</a>
+                <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Configurações</a>
+            </div>
+            <div class="md:hidden flex items-center">
+                <button class="outline-none mobile-menu-button">
+                    <svg class="w-6 h-6 text-gray-500 hover:text-green-500" x-show="!showMenu" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <div class="container mx-auto pt-20 pb-10 px-4">
+        <h1 class="text-2xl font-bold text-center text-gray-700 mb-10">Relatórios Financeiros</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold text-green-500 mb-4">Relatório de Entradas</h2>
+                <p>Escolha como deseja gerar o relatório.</p>
+                <div class="mb-4">
+                    <label for="monthEntradas" class="block text-gray-700 text-sm font-bold mb-2">Por Mês:</label>
+                    <input type="month" id="monthEntradas" class="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="dateEntradas" class="block text-gray-700 text-sm font-bold mb-2">Por Data:</label>
+                    <input type="date" id="dateEntradas" class="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+                </div>
+                <button class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition duration-300">Gerar Relatório</button>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-xl font-bold text-red-500 mb-4">Relatório de Saídas</h2>
+                <p>Escolha como deseja gerar o relatório.</p>
+                <div class="mb-4">
+                    <label for="monthSaidas" class="block text-gray-700 text-sm font-bold mb-2">Por Mês:</label>
+                    <input type="month" id="monthSaidas" class="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+                </div>
+                <div class="mb-4">
+                    <label for="dateSaidas" class="block text-gray-700 text-sm font-bold mb-2">Por Data:</label>
+                    <input type="date" id="dateSaidas" class="block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+                </div>
+                <button class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow-md hover:bg-red-600 transition duration-300">Gerar Relatório</button>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-white text-center text-gray-500 py-1 shadow-md fixed bottom-0 left-0 w-full">
+        <span class="text-sm text-gray-500 sm:text-center">Dedicado ao meu grande amor 💗 Milena</span>
+    </footer>
+</body>
+</html>

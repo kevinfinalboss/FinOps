@@ -17,7 +17,7 @@
         <div class="mobile-menu hidden md:flex items-center space-x-1">
           <a href="/entradas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Entradas</a>
           <a href="/saidas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Saídas</a>
-          <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Relatórios</a>
+          <a href="/relatorios" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Relatórios</a>
           <a href="#" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Configurações</a>
         </div>
         <div class="md:hidden flex items-center">
@@ -30,13 +30,13 @@
       </div>
     </nav>
     <div class="container mx-auto mt-20 grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="bg-green-500 text-white p-4 rounded-lg shadow-lg">
+      <div class="bg-green-500 text-white p-4 rounded-lg shadow-lg" id="painelEntradas">
         <h2 class="text-xl font-bold mb-2">Entradas</h2>
-        <p class="text-lg">R$ 0,00</p>
+        <p class="text-lg" id="totalEntradas">R$ 0,00</p>
       </div>
       <div class="bg-red-500 text-white p-4 rounded-lg shadow-lg" id="panelSaidas">
-        <h2 class="text-xl font-bold mb-2">Saídas</h2>
-        <p class="text-lg">R$ 0,00</p>
+        <h2 class="text-xl font-bold mb-2">Saídas <span id="saidaAlerta" class="hidden" title="Você gastou mais que recebeu! Tome cuidado com suas finanças">⚠</span></h2>
+        <p class="text-lg" id="totalSaidas">R$ 0,00</p>
       </div>
     </div>
     <div class="container mx-auto mt-10 p-8 bg-white rounded-lg shadow-md">
@@ -63,7 +63,6 @@
                 <option value="Pix">Pix</option>
                 <option value="Outros">Outros</option>
             </select>
-            
           </div>
           <div class="form-group">
             <label for="descricao" class="block text-gray-700 text-sm font-bold mb-2">Descrição 📝</label>
@@ -76,6 +75,32 @@
     <div class="container mx-auto mt-10">
       <h2 class="text-lg font-bold mb-4">Entradas Recentes</h2>
       <div id="expensesList" class="mb-4"></div>
+    </div>
+    <div class="container mx-auto mt-10">
+      <h2 class="text-lg font-bold mb-4">Todas as Entradas</h2>
+      <form id="filterForm" class="mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label for="filterDate" class="block text-gray-700 text-sm font-bold mb-2">Filtrar por Data:</label>
+            <input type="date" id="filterDate" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+          </div>
+          <div>
+            <label for="filterCategory" class="block text-gray-700 text-sm font-bold mb-2">Filtrar por Categoria:</label>
+            <select id="filterCategory" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded">
+                <option value="">Todas</option>
+                <option value="TED">TED</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Dinheiro">Dinheiro</option>
+                <option value="Pix">Pix</option>
+                <option value="Outros">Outros</option>
+            </select>
+          </div>
+          <div class="flex items-end">
+            <button type="submit" class="px-6 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition duration-300">Filtrar</button>
+          </div>
+        </div>
+      </form>
+      <div id="allEntriesList" class="grid grid-cols-1 gap-4"></div>
     </div>
     <footer class="bg-white text-center text-gray-500 py-1 shadow-md fixed bottom-0 left-0 w-full">
       <span class="text-sm text-gray-500 sm:text-center">Dedicado ao meu grande amor 💗 Milena</span>
