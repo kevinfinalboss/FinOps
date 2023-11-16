@@ -52,3 +52,21 @@ func (ic *IncomeController) CreateIncome(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "Entrada registrada com sucesso", "income": income})
 }
+
+func (ic *IncomeController) GetRecentIncomes(c *gin.Context) {
+	incomes, err := ic.incomeService.GetRecentIncomes(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao buscar entradas recentes"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"recent_incomes": incomes})
+}
+
+func (ic *IncomeController) GetIncomesSumByMonth(c *gin.Context) {
+	total, err := ic.incomeService.GetIncomesSum(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao somar entradas"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"total": total})
+}
