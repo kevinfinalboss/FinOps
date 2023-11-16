@@ -64,6 +64,10 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 	router.GET("/relatorios", authMiddleware, func(c *gin.Context) {
 		c.HTML(http.StatusOK, "relatorios.html", gin.H{"title": "Página de Relátorios"})
 	})
+
+	router.GET("/configuracao", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "config.html", gin.H{"title": "Página de Configuração"})
+	})
 }
 
 func healthCheck(c *gin.Context) {
