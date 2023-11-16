@@ -45,17 +45,18 @@ function fetchUsers() {
 }
 
 function renderUsers(users) {
-    const usersTable = document.getElementById('usersTable');
+    const usersList = document.getElementById('usersList');
     users.forEach(user => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${user.full_name}</td>
-            <td>${user.email}</td>
-            <td>
-                <a href="#">Editar</a> | 
-                <a href="#">Ver</a> | 
-                <a href="#">Excluir</a>
-            </td>`;
-        usersTable.appendChild(tr);
+        const userCard = document.createElement('div');
+        userCard.className = 'p-4 bg-white rounded-lg border border-gray-200 shadow';
+        userCard.innerHTML = `
+            <h3 class="text-lg font-semibold">${user.full_name}</h3>
+            <p class="text-gray-600">${user.email}</p>
+            <div class="mt-3">
+                <a href="#" class="text-blue-600 hover:text-blue-800">Editar</a> | 
+                <a href="#" class="text-green-600 hover:text-green-800">Ver</a> | 
+                <a href="#" class="text-red-600 hover:text-red-800">Excluir</a>
+            </div>`;
+        usersList.appendChild(userCard);
     });
 }
