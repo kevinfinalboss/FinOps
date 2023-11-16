@@ -40,6 +40,8 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 		{
 			incomeGroup.Use(authMiddleware)
 			incomeGroup.POST("/register", incomeController.CreateIncome)
+			incomeGroup.GET("/recent", incomeController.GetRecentIncomes)
+			incomeGroup.GET("/sumByMonth", incomeController.GetIncomesSumByMonth)
 		}
 	}
 
