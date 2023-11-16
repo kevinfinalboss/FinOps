@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Financeiro Pessoal 📊</title>
+    <link rel="stylesheet" href="../assets/css/entradas.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1.2/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body class="bg-gray-100">
+    <nav class="bg-white shadow-md w-full fixed top-0 left-0">
+      <div class="flex justify-between items-center w-full px-4 py-3">
+        <div>
+          <span class="font-semibold text-gray-500 text-lg">Financeiro 💰</span>
+        </div>
+        <div class="mobile-menu hidden md:flex items-center space-x-1">
+          <a href="/entradas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Entradas</a>
+          <a href="/saidas" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Saídas</a>
+          <a href="/relatorios" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Relatórios</a>
+          <a href="/config" class="py-2 px-4 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Configurações</a>
+        </div>
+        <div class="md:hidden flex items-center">
+          <button class="outline-none mobile-menu-button">
+            <svg class="w-6 h-6 text-gray-500 hover:text-green-500" x-show="!showMenu" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+              <path d="M4 6h16M4 12h16M4 18h16"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="container mx-auto mt-20">
+        <div class="p-8 bg-white rounded-lg shadow-md">
+            <h2 class="text-xl font-bold mb-4">Adicionar Usuário</h2>
+            <form>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="form-group">
+                        <label for="nomeUsuario" class="block text-gray-700 text-sm font-bold mb-2">Nome do Usuário</label>
+                        <input type="text" id="nomeUsuario" placeholder="Nome Completo" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
+                    </div>
+                    <div class="form-group">
+                        <label for="emailUsuario" class="block text-gray-700 text-sm font-bold mb-2">E-mail</label>
+                        <input type="email" id="emailUsuario" placeholder="email@exemplo.com" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
+                    </div>
+                    <div class="form-group">
+                        <label for="senhaUsuario" class="block text-gray-700 text-sm font-bold mb-2">Senha</label>
+                        <input type="password" id="senhaUsuario" placeholder="********" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
+                    </div>
+                    <div class="form-group">
+                        <label for="perfilUsuario" class="block text-gray-700 text-sm font-bold mb-2">Perfil</label>
+                        <select id="perfilUsuario" class="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out focus:text-gray-700 focus:bg-white focus:border-green-500 focus:outline-none">
+                            <option>Administrador</option>
+                            <option>Usuário</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="mt-4 px-6 py-2 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-600 transition duration-300">Adicionar Usuário</button>
+            </form>
+        </div>
+    </div>
+    <script src="../assets/js/configuracoes.js"></script>
+</body>
+</html>
