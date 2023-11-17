@@ -63,11 +63,6 @@ func SendLoginWebhook(username, email, ip string) error {
 				Value:  time.Now().Format("02/01/2006 15:04:05"),
 				Inline: true,
 			},
-			{
-				Name:   "IP",
-				Value:  ip,
-				Inline: true,
-			},
 		},
 	}
 
