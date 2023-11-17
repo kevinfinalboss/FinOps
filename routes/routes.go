@@ -26,8 +26,13 @@ func RegisterRoutes(router *gin.Engine, userRepo *repository.UserRepository, spe
 	{
 		apiGroup.GET("/healthcheck", healthCheck)
 		apiGroup.POST("/user/login", userController.LoginUser)
-		apiGroup.POST("/user/register", userController.RegisterUser)
-		apiGroup.GET("/users/list", userController.GetAllUsers)
+
+		protectedGroup := apiGroup.Group("/")
+		protectedGroup.Use(authMiddleware)
+		{
+			protectedGroup.POST("/user/register", userController.RegisterUser)
+			protectedGroup.GET("/users/list", userController.GetAllUsers)
+		}
 
 		spendingGroup := apiGroup.Group("/spendings")
 		{
